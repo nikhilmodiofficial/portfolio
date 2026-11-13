@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nikhil Modi, Break Into the Vyuh</title>
+<meta name="description" content="Nikhil Modi, product manager. Shipping products with AI, testing them in public. Break into a seven-ring vyuh and collect the products he built.">
+<meta property="og:title" content="Break into the vyuh: Nikhil Modi's products, ring by ring">
+<meta property="og:description" content="Seven rings, eleven treasures, and guards at the gates who ask what you would have done.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,600;0,800;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · theme: custom (palette pinned by the user: hanusek.com) · idea: "the visitor is Arjun's arrow breaking into a seven-ring vyuh; every ring is a stretch of Nikhil's career and every treasure inside is a product" · vibe: "warm paper, dark formation, one vermilion arrow" · posture: committed (the vyuh field is deep, sheets are paper, vermilion marks only the arrow, its trail and the gates) · axes: light-and-deep/grotesk/chromatic-vermilion · hero: identity card over the turning vyuh · nav: slim bar with progress · footer: the centre · job: hire */
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V5 · weakest: E, a game can trap a busy visitor; the list view and the 20-second version are one tap away on every screen, and nothing is required to reach any treasure through the list */
+/* Hallmark · waive 80 (drawn treasures are the game's own material, simple geometry, each labelled), 47c (wall dots are the formation, not decoration); one ambient loop: the formation's slow march, paused under reduced motion and when the tab is hidden */
+/* Impeccable · mode: Experience · signature: a gate's doors swing open on a spring, the arrow rides through and the camera drops one ring deeper · browser surfaces themed */
+:root{
+  --paper:#FBFAF7;
+  --panel:#F1EEE8;
+  --rule:#DEDAD2;
+  --ink:#141414;
+  --deep:#2D2B27;
+  --deep2:#3A3833;
+  --muted:#6B6862;
+  --ver:#E4572E;
+  --ver-ink:#FBFAF7;
+  --ver-dark:#C9431D;
+  --keep:#3E7A57;
+  --on-deep:#FBFAF7;
+  --on-deep-2:rgba(251,250,247,.62);
+  --wall:rgba(251,250,247,.34);
+  --font:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --space-2xs:4px;--space-xs:8px;--space-sm:12px;--space-md:16px;--space-lg:24px;--space-xl:40px;--space-2xl:64px;
+  --r-lg:16px;--r-md:10px;--r-sm:6px;
+  --bar:58px;--sheet-w:min(480px,42vw);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --dur-micro:120ms;--dur-short:220ms;--dur-long:420ms;
+  --z-field:1;--z-ui:100;--z-sheet:300;--z-modal:400;--z-toast:500;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow-x:clip}
+body{background:var(--deep);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;font-synthesis:none;-webkit-font-smoothing:antialiased;overflow:hidden;caret-color:var(--ver)}
+::selection{background:rgba(228,87,46,.22)}
+*{scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+:focus-visible{outline:2.5px solid var(--ver);outline-offset:2px;border-radius:var(--r-sm)}
+h1,h2,h3{margin:0;text-wrap:balance;overflow-wrap:break-word;min-width:0}
+p{margin:0;text-wrap:pretty}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* field */
+#field{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:var(--z-field);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#field.dragging{cursor:grabbing}
+#field.dragging .tr{cursor:grabbing}
+.go .recentre[hidden]{display:none}
+.wall{fill:none;stroke:var(--wall);stroke-width:9;stroke-linecap:round;stroke-dasharray:.1 17}
+.wall.cw{animation:march 26s linear infinite}
+.wall.ccw{animation:march 26s linear infinite reverse}
+@keyframes march{to{stroke-dashoffset:-180}}
+.post{fill:var(--ver)}
+.door{stroke:var(--ver);stroke-width:5;stroke-linecap:round}
+.ringname{font-family:var(--font);font-size:13px;fill:var(--on-deep-2);letter-spacing:.02em}
+.trail{fill:none;stroke:var(--ver);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.ahead{fill:none;stroke:rgba(251,250,247,.16);stroke-width:2;stroke-dasharray:2 7;stroke-linecap:round}
+.centre{fill:rgba(228,87,46,.12);stroke:rgba(228,87,46,.5);stroke-width:1.5}
+.centre-t{font-family:var(--font);font-weight:800;font-size:14px;fill:var(--on-deep);text-anchor:middle}
+.tr{cursor:pointer}
+.tr .base{fill:var(--deep2);stroke:rgba(251,250,247,.5);stroke-width:1.5;transition:stroke var(--dur-short) var(--ease-out),fill var(--dur-short) var(--ease-out)}
+.tr .ico{fill:none;stroke:var(--on-deep);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tr .ico .f{fill:var(--on-deep);stroke:none}
+.tr .lbl{font-family:var(--font);font-weight:600;font-size:12px;fill:var(--on-deep);text-anchor:middle;paint-order:stroke;stroke:var(--deep);stroke-width:4px}
+.tr.locked{opacity:.32}
+.tr.open .base{stroke:var(--ver);stroke-width:2.5}
+.tr.found .base{fill:var(--ver);stroke:var(--ver)}
+.tr.found .ico{stroke:var(--ver-ink)}
+.tr.found .ico .f{fill:var(--ver-ink)}
+.tr:hover .base,.tr:focus-visible .base{stroke:var(--ver);stroke-width:3}
+.tr:focus{outline:none}
+.glint{fill:var(--on-deep);opacity:0}
+.tr.open:not(.found) .glint{animation:glint 3.2s var(--ease-out) infinite}
+@keyframes glint{0%,70%{opacity:0;transform:scale(.4)}80%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.6)}}
+.glint{transform-box:fill-box;transform-origin:center}
+.arrow .head{fill:var(--ver)}
+.arrow .shaft{stroke:var(--ver);stroke-width:2.5;stroke-linecap:round}
+.arrow .fl{fill:var(--on-deep);opacity:.85}
+
+/* bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:var(--z-ui);height:var(--bar);display:flex;align-items:center;gap:var(--space-sm);padding:0 clamp(12px,2.4vw,28px);background:rgba(45,43,39,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(251,250,247,.1);color:var(--on-deep)}
+.bar b{font-weight:800;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
+.bar .where{font-size:14px;color:var(--on-deep-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bar .sp{margin-left:auto}
+.found-n{font-family:var(--mono);font-size:13px;color:var(--on-deep);background:rgba(251,250,247,.08);border:1px solid rgba(251,250,247,.16);padding:5px 10px;border-radius:999px;white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-xs);min-height:44px;padding:0 var(--space-lg);border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:600 15px/1 var(--font);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color var(--dur-short) var(--ease-out),border-color var(--dur-short) var(--ease-out),transform var(--dur-micro) var(--ease-out)}
+.btn:hover{border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.primary{background:var(--ver);border-color:var(--ver);color:var(--ver-ink)}
+.btn.primary:hover:not(:disabled){background:var(--ver-dark);border-color:var(--ver-dark)}
+.btn.ghost{background:transparent;color:var(--on-deep);border-color:rgba(251,250,247,.28)}
+.btn.ghost:hover{border-color:var(--on-deep)}
+.btn.sm{min-height:36px;padding:0 var(--space-md);font-size:14px}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-sm)}
+
+/* intro card */
+.intro{position:fixed;z-index:var(--z-ui);left:clamp(16px,4vw,56px);top:calc(var(--bar) + clamp(24px,8vh,96px));width:min(520px,calc(100% - 32px));background:var(--paper);border-radius:var(--r-lg);padding:clamp(22px,3vw,36px);display:grid;gap:var(--space-md);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);transition:transform var(--dur-long) var(--ease-out),opacity var(--dur-long) var(--ease-out)}
+.intro .who{font-size:14px;color:var(--muted)}
+.intro h1{font-weight:800;font-size:clamp(36px,4.2vw,58px);line-height:1.02;letter-spacing:-.035em}
+.intro .lede{font-size:18px;max-width:38ch}
+.intro .now{display:inline-flex;align-items:center;gap:var(--space-sm);align-self:start;font-size:14px;color:var(--ink);text-decoration:none;padding:4px 12px 4px 4px;border:1px solid var(--rule);border-radius:999px}
+.intro .now span{background:var(--ver);color:var(--ver-ink);font-weight:600;font-size:12.5px;padding:2px 9px;border-radius:999px}
+.intro.away{transform:translateY(20px);opacity:0;pointer-events:none}
+
+/* go control */
+.go{position:fixed;z-index:var(--z-ui);left:50%;bottom:clamp(16px,4vh,32px);transform:translateX(-50%);display:flex;gap:var(--space-sm);align-items:center;background:rgba(45,43,39,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(251,250,247,.14);padding:8px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity var(--dur-long) var(--ease-out),left var(--dur-long) var(--ease-out)}
+.go.on{opacity:1;pointer-events:auto}
+.go .hint{color:var(--on-deep);font-size:14px;padding:0 var(--space-sm);white-space:nowrap;background:none;border:0;font-family:var(--font);min-height:44px;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(251,250,247,.35);text-underline-offset:4px}
+.go .hint:disabled{cursor:default;text-decoration:none;color:var(--on-deep-2)}
+body.sheet-open .go{left:calc((100% - var(--sheet-w)) / 2)}
+
+/* sheet: one standard format for every treasure */
+.sheet{position:fixed;z-index:var(--z-sheet);top:calc(var(--bar) + 10px);right:10px;bottom:10px;width:var(--sheet-w);background:var(--paper);border-radius:var(--r-lg);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);display:flex;flex-direction:column;transform:translateX(calc(100% + 30px));transition:transform var(--dur-long) var(--ease-out);overflow:hidden}
+.sheet.open{transform:none}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);padding:var(--space-sm) var(--space-md);border-bottom:1px solid var(--rule);background:var(--panel)}
+.sh-top .crumb{font-size:13.5px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-top .crumbs{display:flex;align-items:center;gap:var(--space-sm);min-width:0}
+.sh-top .back[hidden]{display:none}
+.sh-body{overflow-y:auto;padding:var(--space-lg);display:grid;gap:var(--space-lg);align-content:start;flex:1}
+.sh-body > *{animation:rise var(--dur-long) var(--ease-out) both}
+.sh-body > :nth-child(2){animation-delay:40ms}.sh-body > :nth-child(3){animation-delay:80ms}.sh-body > :nth-child(4){animation-delay:120ms}
+@keyframes rise{from{opacity:.0001;transform:translateY(8px)}}
+.sh-foot{display:flex;justify-content:space-between;gap:var(--space-sm);padding:var(--space-sm) var(--space-md);border-top:1px solid var(--rule);background:var(--panel)}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:400 22px/1 var(--font);cursor:pointer}
+.x:hover{border-color:var(--muted)}
+
+.head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-md);align-items:center}
+.logo{width:58px;height:58px;border-radius:14px;object-fit:contain;background:var(--paper);box-shadow:0 0 0 1px var(--rule)}
+.emb{width:58px;height:58px;border-radius:14px;background:var(--deep);display:grid;place-items:center}
+.emb svg{width:38px;height:38px}
+.emb .ico{fill:none;stroke:var(--on-deep);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.emb .ico .f{fill:var(--on-deep);stroke:none}
+.head h2{font-weight:800;font-size:clamp(30px,3vw,40px);line-height:1.02;letter-spacing:-.03em}
+.site{font-size:15px;font-weight:600;color:var(--ver-dark);text-underline-offset:4px}
+.site.off{color:var(--muted);font-weight:400}
+.meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-sm);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:var(--space-sm) 0}
+.meta dt{font-size:12.5px;color:var(--muted)}
+.meta dd{margin:0;font-size:14.5px;font-weight:600}
+.st-live{color:var(--keep)}.st-run{color:var(--ver-dark)}.st-hold{color:#8A6A12}.st-off{color:var(--muted)}
+.line{font-size:18px}
+.media{display:grid;gap:var(--space-xs)}
+.shot{display:flex;justify-content:center;align-items:center;height:clamp(220px,32vh,340px);padding:0;border:1px solid var(--rule);border-radius:var(--r-md);overflow:hidden;background:var(--panel);cursor:zoom-in}
+.shot img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity var(--dur-short) var(--ease-out)}
+.shot img.swap{opacity:0}
+.shot.none{cursor:default;flex-direction:column;gap:var(--space-sm);color:var(--muted);font-size:14px;text-align:center;padding:var(--space-lg)}
+.shot.none .emb{width:72px;height:72px}
+.thumbs{display:flex;gap:var(--space-xs);flex-wrap:wrap}
+.thumb{padding:0;border:1.5px solid var(--rule);border-radius:var(--r-sm);overflow:hidden;width:64px;height:48px;background:var(--panel);cursor:pointer;transition:border-color var(--dur-short) var(--ease-out)}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb[aria-pressed="true"]{border-color:var(--ver)}
+figcaption{font-size:13px;color:var(--muted)}
+.facts{margin:0;display:grid;border-top:1px solid var(--rule)}
+.facts div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:var(--space-md);padding:var(--space-sm) 0;border-bottom:1px solid var(--rule)}
+.facts dt{font-size:13.5px;color:var(--muted)}
+.facts dd{margin:0;font-size:15.5px}
+.links{margin:0;display:flex;flex-wrap:wrap;gap:var(--space-sm) var(--space-xl)}
+.links div{display:grid;gap:2px}
+.links dt{font-size:12.5px;color:var(--muted)}
+.links dd{margin:0;font-size:15px}
+.links a{font-weight:600;color:var(--ver-dark);text-underline-offset:4px}
+.links span{color:var(--muted)}
+.sec-t{font-size:13px;color:var(--muted);margin-bottom:-12px}
+
+/* asks, calls, forms */
+.ask{border:1px solid var(--rule);background:var(--panel);border-radius:var(--r-md);padding:var(--space-md);display:grid;gap:var(--space-sm)}
+.ask h3{font-size:17px;font-weight:800;letter-spacing:-.01em}
+.seg{display:flex;flex-wrap:wrap;gap:var(--space-xs);border:0;margin:0;padding:0}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg span{display:inline-flex;align-items:center;min-height:40px;padding:0 var(--space-md);border:1px solid var(--rule);border-radius:999px;background:var(--paper);font-size:14.5px;font-weight:600;cursor:pointer;transition:border-color var(--dur-short) var(--ease-out),background-color var(--dur-short) var(--ease-out),color var(--dur-short) var(--ease-out)}
+.seg span:hover{border-color:var(--muted)}
+.seg input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.seg input:focus-visible+span{outline:2.5px solid var(--ver);outline-offset:2px}
+.fld{display:grid;gap:6px;font-size:13.5px;color:var(--muted)}
+.fld input,.fld textarea,.tin{font:400 16px/1.5 var(--font);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-md);padding:10px 12px;width:100%;min-height:44px}
+.fld input:focus-visible,.fld textarea:focus-visible,.tin:focus-visible{outline:2.5px solid var(--ver);outline-offset:1px;border-color:var(--ver)}
+.status{font-size:13.5px;color:var(--muted);min-height:1.3em}
+.status.ok{color:var(--keep)}
+.gate-h{display:grid;gap:var(--space-xs)}
+.gate-h .k{font-size:13.5px;color:var(--ver-dark);font-weight:600}
+.gate-h h2{font-weight:800;font-size:clamp(28px,2.8vw,36px);line-height:1.05;letter-spacing:-.03em}
+.q{font-size:17px}
+.choices{display:grid;gap:var(--space-xs);border:0;margin:0;padding:0;min-width:0}
+.choice{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:var(--space-sm);align-items:center;padding:var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm);border:1px solid var(--rule);border-radius:var(--r-md);cursor:pointer;background:var(--paper);transition:border-color var(--dur-short) var(--ease-out),background-color var(--dur-short) var(--ease-out)}
+.choice:hover{border-color:var(--muted)}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--rule);font-family:var(--mono);font-size:13px;transition:background-color var(--dur-short) var(--ease-out),color var(--dur-short) var(--ease-out)}
+.choice:has(input:checked){border-color:var(--ink);background:var(--panel)}
+.choice:has(input:checked) .n{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.choice:has(input:focus-visible){outline:2.5px solid var(--ver);outline-offset:2px}
+.locked .choice{cursor:default}
+.choice.mine{border-color:var(--keep)!important;background:rgba(62,122,87,.07)!important}
+.choice.mine .n{background:var(--keep)!important;color:var(--paper)!important;border-color:var(--keep)!important}
+.choice.yours:not(.mine){border-color:var(--ver)!important}
+.choice.yours:not(.mine) .n{background:var(--ver)!important;color:var(--paper)!important;border-color:var(--ver)!important}
+.choice .tag{font-size:12.5px;font-weight:600}
+.choice.mine .tag{color:var(--keep)}.choice.yours:not(.mine) .tag{color:var(--ver-dark)}
+.locked .choice:not(.mine):not(.yours){opacity:.55}
+.reveal{display:grid;gap:var(--space-sm);border-top:1px solid var(--rule);padding-top:var(--space-md);animation:open var(--dur-long) var(--ease-out) both}
+@keyframes open{from{clip-path:inset(0 0 100% 0);opacity:.0001}to{clip-path:inset(0 0 0 0);opacity:1}}
+.reveal b{font-size:21px;font-weight:800;letter-spacing:-.01em}
+.reveal .same{color:var(--keep)}.reveal .split{color:var(--ver-dark)}
+.lbl{font-size:12.5px;color:var(--muted)}
+.takeaway{background:var(--deep);color:var(--on-deep);border-radius:var(--r-md);padding:var(--space-sm) var(--space-md)}
+.takeaway .lbl{color:var(--ver)}
+.take{display:grid;gap:6px}
+.takerow{display:grid;gap:var(--space-xs);justify-items:start}
+.tin{min-width:0}
+.form{display:grid;gap:var(--space-md)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)}
+.list{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--rule)}
+.list li{border-bottom:1px solid var(--rule)}
+.list button{width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:var(--space-md);align-items:center;padding:var(--space-sm) 0;background:none;border:0;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.list button:hover b{color:var(--ver-dark)}
+.list .emb,.list .logo{width:44px;height:44px;border-radius:10px}
+.list .emb svg{width:28px;height:28px}
+.list b{display:block;font-size:16px;transition:color var(--dur-short) var(--ease-out)}
+.list small{color:var(--muted);font-size:13.5px}
+.list .st{font-size:13px;font-weight:600}
+.big{font-weight:800;font-size:clamp(72px,8vw,110px);line-height:.85;letter-spacing:-.05em;color:var(--ver)}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:var(--z-modal);background:rgba(20,20,20,.6);display:flex;align-items:center;justify-content:center;padding:var(--space-md);opacity:0;visibility:hidden;transition:opacity var(--dur-short) var(--ease-out),visibility 0s linear var(--dur-short)}
+.overlay.open{opacity:1;visibility:visible;transition:opacity var(--dur-short) var(--ease-out),visibility 0s}
+.overlay img{max-width:min(1240px,100%);max-height:88dvh;height:auto;border-radius:var(--r-md)}
+.brief{background:var(--paper);border-radius:var(--r-lg);width:min(680px,100%);padding:clamp(20px,4vw,40px);display:grid;gap:var(--space-md);position:relative;max-height:86dvh;overflow-y:auto}
+.brief h2{font-size:clamp(30px,4.4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.05;padding-right:48px}
+.brief ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.brief li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:var(--space-md);padding:var(--space-sm) 0;border-bottom:1px solid var(--rule)}
+.brief li b{font-weight:800;font-size:19px}
+.brief .x{position:absolute;top:var(--space-sm);right:var(--space-sm)}
+.toast{position:fixed;z-index:var(--z-toast);left:50%;bottom:96px;transform:translate(-50%,12px);opacity:0;background:var(--paper);color:var(--ink);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;transition:opacity var(--dur-short) var(--ease-out),transform var(--dur-short) var(--ease-out);pointer-events:none;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:860px){
+  :root{--sheet-w:100%}
+  .bar .where,.bar .hide-s{display:none}
+  .intro{top:auto;bottom:12px;left:12px;width:calc(100% - 24px);padding:20px}
+  .intro h1{font-size:34px}
+  .intro .lede{font-size:16px}
+  .sheet{top:auto;left:6px;right:6px;bottom:6px;width:auto;height:76dvh;transform:translateY(calc(100% + 30px))}
+  body.sheet-open .go{opacity:0;pointer-events:none}
+  .go .hint{font-size:13.5px;padding:0 4px 0 10px}
+  .meta{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .facts div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .brief li{grid-template-columns:minmax(0,1fr);gap:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:1ms!important}
+}
+</style>
+</head>
+<body>
+<svg id="field" role="img" aria-label="A seven-ring formation seen from above. Each ring is a stretch of Nikhil's career; the treasures in each ring are his products. The same content is in the list view." xmlns="http://www.w3.org/2000/svg"><g id="cam"></g></svg>
+
+<header class="bar">
+  <b>Nikhil Modi</b>
+  <span class="where" id="where">Outside the vyuh</span>
+  <span class="sp"></span>
+  <span class="found-n" id="foundN" aria-live="polite">0 of 11 found</span>
+  <button class="btn sm ghost" type="button" id="listBtn">List view</button>
+  <button class="btn sm ghost hide-s" type="button" data-brief>20-second version</button>
+  <button class="btn sm ghost hide-s" type="button" id="consultBtn">Product consulting</button>
+</header>
+
+<section class="intro" id="intro" aria-labelledby="h1">
+  <p class="who">Nikhil Modi, product manager and founder of Kill Criteria</p>
+  <h1 id="h1">Shipping products with AI, testing them in public.</h1>
+  <p class="lede">Seven rings, one for each stretch of my career. Every ring hides a treasure (read ‘something I built’), and the guards at the gates ask what you’d have done in my place. Answer or skip. This isn’t Abhimanyu’s vyuh; nobody gets&nbsp;trapped.</p>
+  <a class="now" href="#" id="nowLink"><span>Running now</span>Post or Pay, a public pilot with real money on it</a>
+  <div class="actions">
+    <button class="btn primary" type="button" id="enter">Enter the vyuh</button>
+    <button class="btn" type="button" data-brief>20-second version</button>
+    <button class="btn" type="button" data-list>See everything as a list</button>
+  </div>
+</section>
+
+<div class="go" id="go"><button class="hint" type="button" id="goHint"></button><button class="btn sm ghost recentre" type="button" id="recentre" hidden>Recentre</button><button class="btn primary" type="button" id="goBtn">Go deeper</button></div>
+
+<aside class="sheet" id="sheet" aria-label="Details">
+  <div class="sh-top"><span class="crumbs"><button class="btn sm back" type="button" id="backList" hidden>Back to list</button><span class="crumb" id="crumb"></span></span><button class="x" type="button" id="closeSheet" aria-label="Close">&times;</button></div>
+  <div class="sh-body" id="body" aria-live="polite"></div>
+  <div class="sh-foot" id="foot"></div>
+</aside>
+
+<div class="overlay" id="brief" role="dialog" aria-modal="true" aria-labelledby="briefH" aria-hidden="true"><div class="brief" id="briefBox"></div></div>
+<div class="overlay" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot" aria-hidden="true"><img id="lbImg" alt=""></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const D=window.NM,$=s=>document.querySelector(s),NS="http://www.w3.org/2000/svg";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const el=(n,a={},p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const S=Object.fromEntries(D.stops.map(s=>[s.id,s]));
+
+/* ---------- the formation ---------- */
+// corridor k sits between wall k-1 and wall k; the visitor enters at k=7 and ends in the centre
+const R=k=>80+58*k, M=k=>R(k)-29;
+const GATE={7:90,6:300,5:150,4:20,3:210,2:340,1:100,0:320};
+const RINGS={
+  7:{name:"Ring 7",title:"College founder years",span:"2017 to 2019",items:["lowallet","utfive"],call:"utfive"},
+  6:{name:"Ring 6",title:"KPMG",span:"2019 to 2022",items:["kpmg"]},
+  5:{name:"Ring 5",title:"AdPushup",span:"2022 to 2025",items:["adpushup"],call:"sea"},
+  4:{name:"Ring 4",title:"Kill Criteria",span:"2025",items:["studio"]},
+  3:{name:"Ring 3",title:"First bets",span:"Sep 2026",items:["unhyped"],call:"unhyped"},
+  2:{name:"Ring 2",title:"Shipped in a week",span:"Oct 2026",items:["rumaal","altgiving"],call:"rumaal"},
+  1:{name:"Ring 1",title:"Running now",span:"Oct to Nov 2026",items:["postorpay","journal","chakravyooha"],calls:["postorpay","journal","chakravyooha"]}
+};
+const ALL=[7,6,5,4,3,2,1].flatMap(k=>RINGS[k].items);
+const ringOf=id=>+Object.keys(RINGS).find(k=>RINGS[k].items.includes(id));
+const rad=d=>d*Math.PI/180, pt=(a,r)=>[Math.cos(rad(a))*r,Math.sin(rad(a))*r];
+const span=k=>{let s=(GATE[k-1]-GATE[k]+360)%360;if(s<80)s+=360;return s};
+
+// treasure drawings: each is its own object, drawn in a 40 x 40 box centred on 0,0
+const ICONS={
+  lowallet:'<rect x="-13" y="-9" width="26" height="18" rx="3"/><path d="M-13 -3H13"/><rect class="f" x="-9" y="2" width="7" height="3" rx="1"/>',
+  utfive:'<path d="M-10 -12H8a4 4 0 0 1 4 4v18a2 2 0 0 1-4 0V-8"/><path d="M-10 -12a4 4 0 0 0-4 4v2h4"/><path d="M-6 -4H4M-6 1H4M-6 6H1"/><path d="M8 12H-6a4 4 0 0 1-4-4V-12"/>',
+  kpmg:'<circle r="13"/><circle r="9"/><path d="M-4 -3h8M-4 1h8M-2 5h4"/>',
+  adpushup:'<circle r="13"/><circle r="9"/><path d="M-5 4l5-9 5 9M-3 1h6"/>',
+  studio:'<circle r="13"/><circle r="9"/><path d="M-4 -5l8 10M4 -5l-8 10"/>',
+  unhyped:'<circle r="13"/><path class="f" d="M0 -10l3 10h-6z"/><path d="M0 10l3-10h-6z"/><circle class="f" r="1.6"/>',
+  rumaal:'<path d="M0 -14l14 14-14 14-14-14z"/><circle class="f" cx="0" cy="-5" r="1.4"/><circle class="f" cx="-5" cy="0" r="1.4"/><circle class="f" cx="5" cy="0" r="1.4"/><circle class="f" cx="0" cy="5" r="1.4"/><circle class="f" cx="0" cy="0" r="1.4"/>',
+  altgiving:'<path d="M-12 4q12 10 24 0z"/><path class="f" d="M0 -13q5 6 0 12q-5-6 0-12z"/><path d="M-12 4h24"/>',
+  postorpay:'<circle r="13"/><circle r="10"/><path d="M-4 -5h8M-4 -1h8M-1 -5q5 0 5 4t-5 4l5 5"/>',
+  chakravyooha:'<circle r="13" stroke-dasharray="4 3"/><circle r="8" stroke-dasharray="3 2.5"/><circle class="f" r="2.6"/>',
+  journal:'<ellipse cx="0" cy="-3" rx="9" ry="11"/><path d="M0 8v7M-4 15h8"/><path d="M-4 -8q-2 4 0 8" />'
+};
+const icon=(id,size=40)=>`<svg viewBox="-20 -20 40 40" width="${size}" height="${size}" aria-hidden="true"><g class="ico">${ICONS[id]}</g></svg>`;
+
+const svg=$("#field"),cam=$("#cam");
+const walls=el("g",{},cam),trailG=el("g",{},cam),trG=el("g",{},cam);
+el("circle",{r:R(0),class:"centre"},walls);
+const ct=el("text",{y:5,class:"centre-t"},walls);ct.textContent="The centre";
+const doors={};
+for(let k=0;k<=7;k++){
+  const r=R(k),g=GATE[k],gap=Math.max(9,(62/r)*180/Math.PI),a0=g+gap/2,a1=g-gap/2+360;
+  const [x0,y0]=pt(a0,r),[x1,y1]=pt(a1,r);
+  el("path",{d:`M${x0},${y0} A${r},${r} 0 1 1 ${x1},${y1}`,class:"wall "+(k%2?"cw":"ccw")},walls);
+  // gate posts and two door leaves that swing on their posts
+  const pA=pt(g-gap/2,r),pB=pt(g+gap/2,r),mid=pt(g,r);
+  const leaves=[pA,pB].map((p,i)=>{const gL=el("g",{transform:`translate(${p[0]},${p[1]})`},walls);const inner=el("g",{},gL);el("line",{x1:0,y1:0,x2:(mid[0]-p[0])*.96,y2:(mid[1]-p[1])*.96,class:"door"},inner);el("circle",{r:4.5,class:"post"},gL);return inner});
+  doors[k]={leaves,open:false};
+  if(k>=1){const [lx,ly]=pt(g+180,R(k)-8);}
+}
+// the route: outside, through every gate, into the centre
+const route=[];let d="";
+{const s=pt(90,R(7)+70);d=`M${s}`;route.push({k:8,len:0});}
+const pathEl=el("path",{class:"trail"},trailG),aheadEl=el("path",{class:"ahead"},trailG);
+let segs=[];
+{
+  let dd=d;const [ex,ey]=pt(GATE[7],M(7));dd+=` L${ex},${ey}`;segs.push({k:7,at:"enter",d:dd});
+  for(let k=7;k>=1;k--){
+    const s=span(k),a1=GATE[k]+s,[x,y]=pt(a1,M(k));
+    dd+=` A${M(k)},${M(k)} 0 ${s>180?1:0} 1 ${x},${y}`;segs.push({k,at:"walked",d:dd});
+    if(k>1){const [nx,ny]=pt(GATE[k-1],M(k-1));dd+=` L${nx},${ny}`;segs.push({k:k-1,at:"enter",d:dd})}
+    else{dd+=` L0,0`;segs.push({k:0,at:"enter",d:dd})}
+  }
+  pathEl.setAttribute("d",dd);aheadEl.setAttribute("d",dd);
+}
+const TOTAL=pathEl.getTotalLength();
+// length at each checkpoint
+const measure=document.createElementNS(NS,"path");trailG.appendChild(measure);
+const L={};segs.forEach(s=>{measure.setAttribute("d",s.d);L[s.k+":"+s.at]=measure.getTotalLength()});measure.remove();
+pathEl.style.strokeDasharray=TOTAL;pathEl.style.strokeDashoffset=TOTAL;
+
+// treasures, spaced along each corridor's walk
+const trEls={};
+for(let k=7;k>=1;k--){
+  const items=RINGS[k].items,s=span(k);
+  items.forEach((id,i)=>{
+    const a=GATE[k]+s*(i+1)/(items.length+1),[x,y]=pt(a,M(k));
+    const g=el("g",{class:"tr locked",tabindex:0,role:"button","aria-label":`${S[id].title}, ${RINGS[k].name}`,transform:`translate(${x},${y})`,"data-at":`translate(${x},${y})`},trG);
+    el("circle",{r:21,class:"base"},g);
+    const ic=el("g",{class:"ico",transform:"scale(.8)"},g);ic.innerHTML=ICONS[id];
+    el("path",{d:"M14 -20l2 5 5 2-5 2-2 5-2-5-5-2 5-2z",class:"glint"},g);
+    const t=el("text",{y:38,class:"lbl"},g);t.textContent=S[id].title;
+    g.addEventListener("click",()=>tryOpen(id));
+    g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tryOpen(id)}});
+    trEls[id]=g;
+  });
+}
+// the arrow
+const arrow=el("g",{class:"arrow"},cam);
+const arrowIn=el("g",{},arrow);
+el("line",{x1:-26,y1:0,x2:6,y2:0,class:"shaft"},arrowIn);
+el("path",{d:"M14 0L2 -7L5 0L2 7Z",class:"head"},arrowIn);
+el("path",{d:"M-26 0l-6 -6h6l4 6zM-26 0l-6 6h6l4 -6z",class:"fl"},arrowIn);
+
+/* ---------- state ---------- */
+let state={depth:8,found:[],picks:{},passed:[]};
+const reached=id=>ringOf(id)>=state.depth;
+const answered=()=>Object.keys(state.picks).length,matched=()=>Object.entries(state.picks).filter(([c,k])=>D.calls[c].mine===k).length;
+
+/* ---------- camera ---------- */
+let C={x:0,y:0,k:.5},T={...C};
+const sheetOpen=()=>document.body.classList.contains("sheet-open");
+const phone=()=>innerWidth<=860;
+function view(depth){
+  const w=innerWidth,h=innerHeight-58;
+  const areaW=phone()?w:w-(sheetOpen()?Math.min(480,w*.42)+20:0);
+  const areaH=phone()&&sheetOpen()?h*.26:h;
+  const ringR=depth>=8?R(7)+80:depth===0?R(3)+20:R(depth)+46;
+  const k=Math.min(areaW,areaH)/(2*ringR)*.94;
+  let cx=areaW/2,cy=58+areaH/2;
+  if(depth>=8&&!phone()&&$("#intro").classList.contains("away")===false){cx=w*.68}
+  if(depth>=8&&phone()&&!$("#intro").classList.contains("away")){cy=58+h*.3}
+  return {k:depth>=8&&!phone()&&!$("#intro").classList.contains("away")?Math.min(w*.62,h)/(2*(R(7)+60))*.95:k,x:cx,y:cy};
+}
+const apply=()=>cam.setAttribute("transform",`translate(${C.x.toFixed(1)},${C.y.toFixed(1)}) scale(${C.k.toFixed(4)})`);
+
+/* ---------- hold and drag to move the vyuh ---------- */
+let drag=null,panned=false;
+function setPanned(v){panned=v;const b=$("#recentre");if(b)b.hidden=!v}
+svg.addEventListener("pointerdown",e=>{if(e.button!==0)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};});
+svg.addEventListener("pointermove",e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  if(!drag.moved&&Math.hypot(dx,dy)<6)return;
+  if(!drag.moved){drag.moved=true;svg.classList.add("dragging");try{svg.setPointerCapture(e.pointerId)}catch(_){}}
+  drag.x=e.clientX;drag.y=e.clientY;C.x+=dx;C.y+=dy;T.x+=dx;T.y+=dy;apply();setPanned(true);kick()});
+const endDrag=e=>{if(!drag||drag.id!==e.pointerId)return;if(drag.moved){svg.classList.remove("dragging");const stop=ev=>{ev.stopPropagation();ev.preventDefault()};svg.addEventListener("click",stop,{capture:true,once:true});setTimeout(()=>svg.removeEventListener("click",stop,{capture:true}),0)}drag=null};
+svg.addEventListener("pointerup",endDrag);svg.addEventListener("pointercancel",endDrag);
+function recentre(){T=view(state.depth);setPanned(false);kick()}
+
+/* ---------- motion: a spring easing, the arrow, the doors ---------- */
+function springEase(k=170,c=12){let x=0,v=0;const p=[];for(let i=0;i<=56;i++){p.push(+x.toFixed(4));for(let j=0;j<4;j++){const a=-k*(x-1)-c*v;v+=a/240;x+=v/240}}return p}
+const SPR=CSS.supports("animation-timing-function","linear(0, 1)")?`linear(${springEase().join(",")})`:"cubic-bezier(.34,1.5,.64,1)";
+let Ld=0,Lt=0,raf=0,lastT=performance.now(),rot={a:-90,v:0},lastP=null;
+function tick(now){
+  const dt=Math.min(.05,(now-lastT)/1000)||.016;lastT=now;
+  const a=reduce?1:1-Math.pow(1-.09,dt*60);
+  C={x:C.x+(T.x-C.x)*a,y:C.y+(T.y-C.y)*a,k:C.k+(T.k-C.k)*a};apply();
+  // the arrow rides the route at a steady pace
+  const speed=420;const dl=Lt-Ld;Ld=reduce?Lt:Math.abs(dl)<speed*dt?Lt:Ld+Math.sign(dl)*speed*dt;
+  pathEl.style.strokeDashoffset=Math.max(0,TOTAL-Ld);
+  const p=pathEl.getPointAtLength(Math.max(0,Ld)),q=pathEl.getPointAtLength(Math.min(TOTAL,Ld+6));
+  let want=Math.atan2(q.y-p.y,q.x-p.x)*180/Math.PI;if(Ld>=TOTAL-1)want=rot.a;
+  let diff=want-rot.a;while(diff>180)diff-=360;while(diff<-180)diff+=360;
+  if(reduce){rot.a=want}else{const acc=170*diff-14*rot.v;rot.v+=acc*dt;rot.a+=rot.v*dt}
+  arrow.setAttribute("transform",`translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) scale(${(1/Math.max(C.k,.35)*.55).toFixed(3)})`);
+  arrowIn.setAttribute("transform",`rotate(${rot.a.toFixed(1)})`);
+  const ts=Math.min(2,Math.max(1,.62/C.k));if(Math.abs(ts-(tick.ts||0))>.01){tick.ts=ts;for(const g of Object.values(trEls))g.setAttribute("transform",g.dataset.at+` scale(${ts.toFixed(3)})`)}
+  const busy=Math.abs(T.x-C.x)+Math.abs(T.y-C.y)+Math.abs(T.k-C.k)*500>.3||Math.abs(Lt-Ld)>.5||Math.abs(diff)+Math.abs(rot.v)>.05;
+  raf=busy?requestAnimationFrame(tick):0;
+}
+const kick=()=>{if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick)}};
+function moveTo(len,depth){Lt=len;T=view(depth);setPanned(false);kick()}
+function openDoor(k){
+  const dr=doors[k];if(!dr||dr.open)return;dr.open=true;
+  dr.leaves.forEach((lf,i)=>{const deg=i?82:-82;
+    if(reduce){lf.setAttribute("transform",`rotate(${deg})`);return}
+    lf.animate([{transform:"rotate(0deg)"},{transform:`rotate(${deg}deg)`}],{duration:900,easing:SPR,fill:"forwards"});
+  });
+}
+
+/* ---------- inbox (honest until the endpoint exists) ---------- */
+const INBOX_URL="";
+async function deliver(kind,payload,status){
+  const body={kind,...payload,page:location.href.split("#")[0],at:new Date().toISOString()};
+  if(INBOX_URL){try{const r=await fetch(INBOX_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw 0;status.className="status ok";status.textContent="Sent. Thank you, it goes straight to me.";return}catch(e){}}
+  const text=`[${kind}] `+Object.entries(payload).filter(([k,v])=>v).map(([k,v])=>`${k}: ${v}`).join("\n");
+  let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch(e){}
+  window.open(D.links.linkedin,"_blank","noopener");
+  status.className="status ok";status.textContent=ok?"Copied. Paste it into a LinkedIn message to me; my profile just opened.":"Copy is blocked here. Your note: "+text;
+}
+const sendLabel=w=>INBOX_URL?`Send my ${w}`:`Copy my ${w} and open LinkedIn`;
+
+/* ---------- the standard treasure format ---------- */
+const stCls=s=>({Live:"st-live",Running:"st-run","Private beta":"st-hold",Paused:"st-hold",Parked:"st-hold",Studio:"st-run",Role:"st-off"}[s]||"st-off");
+const emblem=id=>`<span class="emb">${icon(id)}</span>`;
+function media(s){
+  const G=s.gallery||[];
+  if(!G.length){const why=s.kind==="job"?"A role, not a product: the facts below are the record.":s.status==="Closed"?"Closed before screenshots were kept.":"No screenshots yet.";
+    return `<div class="media"><div class="shot none">${emblem(s.id)}<span>${esc(why)}</span></div></div>`}
+  const [src,alt,w,h,cap]=G[0];
+  const th=G.length>1?`<div class="thumbs" role="group" aria-label="${esc(s.title)} screenshots">${G.map(([u,a,tw,tth,c],i)=>`<button class="thumb" type="button" data-g="${i}" aria-pressed="${i===0}" aria-label="Show: ${esc(c)}"><img src="${u}" alt="" width="${tw}" height="${tth}" loading="lazy"></button>`).join("")}</div>`:"";
+  return `<figure class="media"><button class="shot" type="button" data-zoom><img src="${src}" alt="${esc(alt)}" width="${w}" height="${h}"></button>${th}<figcaption>${esc(cap)}</figcaption></figure>`;
+}
+function askBlock(s){
+  if(!s.ask)return "";const a=s.ask;
+  return `<form class="ask" data-ask="${s.id}"><h3>${esc(a.q)}</h3><fieldset class="seg"><legend class="sr">${esc(a.q)}</legend>${a.opts.map(o=>`<label><input type="radio" name="v-${s.id}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")}</fieldset><label class="fld"><span>${esc(a.note)}</span><input name="note" maxlength="280"></label><div class="actions"><button class="btn primary" type="submit" disabled>${sendLabel("verdict")}</button></div><p class="status" role="status"></p></form>`;
+}
+function treasureHTML(id){
+  const s=S[id],k=ringOf(id),job=s.kind==="job";
+  const L=(s.links||[]).filter(([kk,u])=>!(u&&s.site&&u===s.site[1]));
+  const site=s.site?(s.site[1]?`<a class="site" href="${s.site[1]}" target="_blank" rel="noopener">${esc(s.site[0])}</a>`:`<span class="site off">${esc(s.site[0])}</span>`):`<span class="site off">No public website</span>`;
+  return `
+  <header class="head">${s.logo?`<img class="logo" src="${s.logo}" alt="" width="58" height="58">`:emblem(id)}<div><h2 id="th">${esc(s.title)}</h2>${site}</div></header>
+  <dl class="meta"><div><dt>${job?"Kind":"Status"}</dt><dd class="${job?"st-off":stCls(s.status)}">${job?"Role":esc(s.status)}</dd></div><div><dt>When</dt><dd>${esc(s.span)}</dd></div><div><dt>My role</dt><dd>${esc(s.role)}</dd></div></dl>
+  <p class="line">${esc(s.line)}</p>
+  ${media(s)}
+  <dl class="facts">${s.facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>
+  ${L.length?`<dl class="links">${L.map(([a,u,t])=>`<div><dt>${esc(a)}</dt><dd>${u?`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`:`<span>${esc(t)}</span>`}</dd></div>`).join("")}</dl>`:""}
+  ${askBlock(s)}`;
+}
+
+/* ---------- sheet ---------- */
+const sheet=$("#sheet"),body=$("#body"),foot=$("#foot");
+let sheetMode=null,sheetId=null,sheetFromList=false;
+function openSheet(keep){$("#backList").hidden=!(sheetMode==="treasure"&&sheetFromList);if(!keep){body.scrollTop=0;requestAnimationFrame(()=>{body.scrollTop=0})}sheet.classList.add("open");document.body.classList.add("sheet-open");T=view(state.depth);setPanned(false);kick()}
+function closeSheet(){sheet.classList.remove("open");document.body.classList.remove("sheet-open");sheetMode=null;T=view(state.depth);setPanned(false);kick();updateGo()}
+$("#closeSheet").onclick=closeSheet;
+$("#backList").onclick=()=>showList();
+function wire(root){
+  root.querySelectorAll(".media").forEach(f=>{const s=S[sheetId];const main=f.querySelector(".shot img"),cap=f.querySelector("figcaption");
+    const z=f.querySelector("[data-zoom]");if(z)z.onclick=()=>openLb(main.src,main.alt);
+    f.querySelectorAll(".thumb").forEach(t=>t.onclick=()=>{const [u,a,w,h,c]=s.gallery[+t.dataset.g];f.querySelectorAll(".thumb").forEach(x=>x.setAttribute("aria-pressed",String(x===t)));main.classList.add("swap");setTimeout(()=>{main.src=u;main.alt=a;main.width=w;main.height=h;cap.textContent=c;main.classList.remove("swap")},reduce?0:150)})});
+  root.querySelectorAll("form.ask").forEach(f=>{f.querySelectorAll("input[type=radio]").forEach(r=>r.onchange=()=>f.querySelector("button[type=submit]").disabled=false);
+    f.onsubmit=async e=>{e.preventDefault();const s=S[f.dataset.ask],v=f.querySelector("input[type=radio]:checked");if(!v)return;await deliver("verdict",{product:s.title,question:s.ask.q,answer:v.value,note:f.note.value.trim()},f.querySelector(".status"))}});
+  root.querySelectorAll("form.take").forEach(f=>f.onsubmit=async e=>{e.preventDefault();const t=f.take.value.trim(),st=f.querySelector(".status");if(!t){st.textContent="Write a line first.";return}const c=D.calls[f.dataset.take];await deliver("take",{call:c.short,their_pick:c.opts[state.picks[f.dataset.take]],take:t},st)});
+  root.querySelectorAll("form.consult").forEach(f=>f.onsubmit=async e=>{e.preventDefault();const st=f.querySelector(".status"),n=f.cName.value.trim(),c=f.cContact.value.trim(),w=f.cNeed.value.trim();if(!n||!c||!w){st.className="status";st.textContent="Add your name, a way to reach you, and a line about what you need.";return}await deliver("consulting",{name:n,contact:c,need:w},st)});
+}
+function showTreasure(id,fromList){
+  sheetMode="treasure";sheetId=id;sheetFromList=!!fromList;const k=ringOf(id);
+  $("#crumb").textContent=`${RINGS[k].name}, ${RINGS[k].title}, ${RINGS[k].span}`;
+  body.innerHTML=treasureHTML(id);body.scrollTop=0;
+  const pool=fromList?ALL:ALL.filter(reached),i=pool.indexOf(id);
+  foot.innerHTML=`<button class="btn sm" type="button" id="pv" ${i<=0?"disabled":""}>Previous treasure</button><button class="btn sm primary" type="button" id="nx">${i<pool.length-1?"Next treasure":fromList?"Back to the list":"Back to the vyuh"}</button>`;
+  $("#pv").onclick=()=>showTreasure(pool[i-1],fromList);
+  $("#nx").onclick=()=>i<pool.length-1?showTreasure(pool[i+1],fromList):fromList?showList():closeSheet();
+  wire(body);openSheet();
+  if(!state.found.includes(id)){state.found.push(id);trEls[id].classList.add("found");if(!reduce)trEls[id].querySelector(".base").animate([{transform:"scale(1)"},{transform:"scale(1.35)"},{transform:"scale(1)"}],{duration:700,easing:SPR});updHud()}
+  $("#th").focus?.();
+}
+function tryOpen(id){
+  if(!reached(id)){toast(`Break through to ${RINGS[ringOf(id)].name} first, or open the list view`);return}
+  showTreasure(id,false);
+}
+
+/* ---------- gates ---------- */
+function ticket(cid){
+  const c=D.calls[cid],p=state.picks[cid],done=p!==undefined;
+  const ch=c.opts.map((o,k)=>{let cls="choice";if(done){if(k===c.mine)cls+=" mine";if(k===p)cls+=" yours"}
+    const tag=done?(k===c.mine?'<span class="tag">My call</span>':k===p?'<span class="tag">Your call</span>':""):"";
+    return `<label class="${cls}"><input type="radio" name="c-${cid}" value="${k}" ${done?"disabled":""} ${done&&p===k?"checked":""}><span class="n">${k+1}</span><span>${esc(o)}</span>${tag}</label>`}).join("");
+  const rev=done?`<div class="reveal"><b class="${p===c.mine?"same":"split"}">${p===c.mine?"Same call.":"We split here."}</b><div><p class="lbl">Why I chose it</p><p>${esc(c.why)}</p></div><div><p class="lbl">What happened</p><p>${esc(c.then)}</p></div><div class="takeaway"><p class="lbl">The takeaway</p><p>${esc(c.takeaway)}</p></div><form class="take" data-take="${cid}"><label class="lbl" for="tk-${cid}">How would you have played it? Optional, one line is plenty.</label><div class="takerow"><input class="tin" id="tk-${cid}" name="take" maxlength="280"><button class="btn" type="submit">${sendLabel("take")}</button></div><p class="status" role="status"></p></form></div>`:"";
+  return `<section class="${done?"locked":""}" data-ticket="${cid}" style="display:grid;gap:var(--space-md)"><div class="gate-h"><p class="k">${esc(c.tag)}, ${esc(c.when)}</p><h2>${esc(c.short)}</h2></div><p class="q">${esc(c.q)}</p><fieldset class="choices"><legend class="sr">Your options</legend>${ch}</fieldset>${done?"":`<div class="actions"><button class="btn primary" type="button" data-lock="${cid}" disabled>Lock my call</button></div>`}${rev}</section>`;
+}
+function gateCalls(k){const r=RINGS[k];return r.calls||(r.call?[r.call]:[])}
+function showGate(k,keep){
+  sheetMode="gate";const calls=gateCalls(k);
+  $("#crumb").textContent=k>1?`The gate from ${RINGS[k].name} into ${RINGS[k-1].name}`:"The last gate, into the centre";
+  const open=calls.filter(c=>state.picks[c]===undefined);
+  body.innerHTML=`<div class="gate-h"><p class="k">The guard asks</p><p class="q" style="color:var(--muted)">${calls.length>1?`${calls.length} calls guard the centre. Answer them, or skip; the gate opens either way.`:"Answer, or skip; the gate opens either way."}</p></div>`+calls.map(ticket).join("");
+  body.scrollTop=0;
+  foot.innerHTML=`<button class="btn sm" type="button" id="skip">${open.length?"Skip, let me through":"Back"}</button><button class="btn sm primary" type="button" id="pass" ${open.length?"disabled":""}>Pass the gate</button>`;
+  $("#skip").onclick=()=>open.length?pass(k):closeSheet();
+  $("#pass").onclick=()=>pass(k);
+  body.querySelectorAll("[data-ticket]").forEach(t=>{const cid=t.dataset.ticket;
+    t.querySelectorAll("input[type=radio]").forEach(i=>i.onchange=()=>{const b=t.querySelector("[data-lock]");if(b)b.disabled=false});
+    const b=t.querySelector("[data-lock]");if(b)b.onclick=()=>{const v=t.querySelector("input:checked");if(!v)return;state.picks[cid]=+v.value;updHud();const y=body.scrollTop;showGate(k,true);body.scrollTop=y;const r=body.querySelector(`[data-ticket="${cid}"] .reveal`);r&&r.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"})};
+  });
+  wire(body);openSheet(keep);
+}
+function pass(k){
+  if(!state.passed.includes(k))state.passed.push(k);
+  closeSheet();descend(k-1);
+}
+
+/* ---------- moving through the vyuh ---------- */
+function setOpen(){Object.entries(trEls).forEach(([id,g])=>{const r=reached(id);g.classList.toggle("locked",!r);g.classList.toggle("open",r)})}
+function descend(k){
+  // open the gate in wall k (between corridor k+1 and k), ride in, walk the ring
+  openDoor(k);
+  state.depth=k;
+  const enter=L[k+":enter"];
+  Lt=enter;T=view(k);setPanned(false);kick();
+  setTimeout(()=>{setOpen();updHud();if(k>=1){Lt=L[k+":walked"];kick()}else{showCentre()}},reduce?0:900);
+}
+function goNext(){
+  const k=state.depth;
+  if(k===8){descend(7);return}
+  if(k===0){showCentre();return}
+  const calls=gateCalls(k);
+  if(calls.length&&!calls.every(c=>state.picks[c]!==undefined)&&!state.passed.includes(k)){showGate(k);return}
+  pass(k);
+}
+function updHud(){
+  const k=state.depth;
+  $("#where").textContent=k===8?"Outside the vyuh":k===0?"The centre":`${RINGS[k].name} of 7: ${RINGS[k].title}, ${RINGS[k].span}`;
+  $("#foundN").textContent=`${state.found.length} of ${ALL.length} found`;
+  updateGo();
+}
+function updateGo(){
+  const k=state.depth,go=$("#go");go.classList.toggle("on",k<8);
+  if(k===0){$("#goHint").disabled=true;$("#goHint").textContent="You broke through";$("#goBtn").textContent="See what you found";return}
+  if(k===8)return;
+  const left=RINGS[k].items.filter(i=>!state.found.includes(i));
+  const calls=gateCalls(k).filter(c=>state.picks[c]===undefined).length;
+  const h=$("#goHint");h.disabled=!left.length;h.dataset.id=left[0]||"";
+  h.textContent=left.length?`Open ${S[left[0]].title}`+(left.length>1?` (+${left.length-1} more)`:""):calls?"A guard waits at the gate":"Ring cleared";
+  $("#goBtn").textContent=k===1?"Break into the centre":calls?"Face the gate":"Go deeper";
+}
+$("#goBtn").onclick=goNext;
+$("#recentre").onclick=recentre;
+$("#goHint").onclick=e=>{const id=e.currentTarget.dataset.id;if(id)tryOpen(id)};
+$("#enter").onclick=()=>{$("#intro").classList.add("away");descend(7)};
+
+/* ---------- centre ---------- */
+function showCentre(){
+  sheetMode="centre";$("#crumb").textContent="The centre";
+  const f=state.found.length,a=answered(),m=matched();
+  body.innerHTML=`<div class="gate-h"><p class="k">You broke through</p><h2>${f===ALL.length?"Every treasure found.":`${f} of ${ALL.length} treasures found.`}</h2></div>
+  <p class="line">${a?`You faced ${a} of ${D.callOrder.length} calls and made the same call as me on ${m}. The ones we split on are the conversation I’d most like to have.`:"You walked past every guard. The calls are still waiting at the gates if you go back."}</p>
+  <div class="actions"><a class="btn primary" href="${D.links.linkedin}" target="_blank" rel="noopener">Message me on LinkedIn</a><button class="btn" type="button" id="copyR">Copy my result</button><a class="btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(D.site)}" target="_blank" rel="noopener">Share the vyuh</a></div>
+  ${consultHTML()}`;
+  foot.innerHTML=`<button class="btn sm" type="button" data-listbtn>List view</button><button class="btn sm primary" type="button" id="again">Start again</button>`;
+  $("#copyR").onclick=async()=>{try{await navigator.clipboard.writeText(`I broke into Nikhil Modi's vyuh: ${f} of ${ALL.length} treasures, ${m} of ${a} calls matched. ${D.site}`);toast("Result copied")}catch(e){toast("Copy is blocked here")}};
+  $("#again").onclick=()=>location.reload();
+  foot.querySelector("[data-listbtn]").onclick=showList;
+  wire(body);openSheet();
+}
+function consultHTML(){
+  return `<form class="form consult" novalidate style="border-top:1px solid var(--rule);padding-top:var(--space-lg)"><div class="gate-h"><p class="k">Product consulting</p><h2>Want a second pair of eyes on your product?</h2></div><p class="q" style="color:var(--muted)">I do short product consulting: what to build next, what to cut, and when to kill something. Fair warning: you’ll get a straight answer, not a deck.</p>
+  <div class="two"><label class="fld"><span>Your name</span><input name="cName" autocomplete="name"></label><label class="fld"><span>Email or LinkedIn</span><input name="cContact" autocomplete="email"></label></div>
+  <label class="fld"><span>What are you building, and where are you stuck?</span><textarea name="cNeed" rows="3"></textarea></label>
+  <div class="actions"><button class="btn primary" type="submit">${sendLabel("request")}</button></div><p class="status" role="status"></p></form>`;
+}
+function showConsult(){sheetMode="consult";$("#crumb").textContent="Product consulting";body.innerHTML=consultHTML();foot.innerHTML=`<a class="btn sm" href="${D.links.linkedin}" target="_blank" rel="noopener">Message me on LinkedIn</a><button class="btn sm primary" type="button" id="bk">Back to the vyuh</button>`;$("#bk").onclick=closeSheet;wire(body);openSheet()}
+$("#consultBtn").onclick=showConsult;
+
+/* ---------- list view: everything, no game required ---------- */
+function showList(){
+  sheetMode="list";$("#crumb").textContent="Everything, as a list";
+  body.innerHTML=`<div class="gate-h"><p class="k">No rings, no gates</p><h2>All ${ALL.length} treasures</h2></div><ul class="list">${ALL.map(id=>{const s=S[id];return `<li><button type="button" data-open="${id}">${s.logo?`<img class="logo" src="${s.logo}" alt="" width="44" height="44">`:emblem(id)}<span><b>${esc(s.title)}</b><small>${esc(s.line)}</small></span><span class="st ${s.kind==="job"?"st-off":stCls(s.status)}">${s.kind==="job"?esc(s.span.split(" to ").pop()):esc(s.status)}</span></button></li>`}).join("")}</ul>`;
+  foot.innerHTML=`<button class="btn sm" type="button" data-brief2>20-second version</button><button class="btn sm primary" type="button" id="toV">${state.depth===8?"Enter the vyuh instead":"Back to the vyuh"}</button>`;
+  body.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>showTreasure(b.dataset.open,true));
+  foot.querySelector("[data-brief2]").onclick=()=>openO($("#brief"));
+  $("#toV").onclick=()=>{closeSheet();if(state.depth===8){$("#intro").classList.add("away");descend(7)}};
+  openSheet();
+}
+$("#listBtn").onclick=showList;document.querySelectorAll("[data-list]").forEach(b=>b.onclick=showList);
+$("#nowLink").onclick=e=>{e.preventDefault();showTreasure("postorpay",true)};
+
+/* ---------- brief, lightbox, toast ---------- */
+let lastF=null;
+function openO(o){lastF=document.activeElement;o.classList.add("open");o.setAttribute("aria-hidden","false");setTimeout(()=>{const f=o.querySelector("button");f&&f.focus()},30)}
+function closeO(o){o.classList.remove("open");o.setAttribute("aria-hidden","true");if(lastF&&document.contains(lastF))lastF.focus()}
+document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{if(e.target===o||e.target.closest("[data-close]")||e.target.id==="lbImg")closeO(o)}));
+const B=D.brief;
+$("#briefBox").innerHTML=`<button class="x" type="button" aria-label="Close the 20-second version" data-close>&times;</button><p class="lbl">The 20-second version</p><h2 id="briefH">Nikhil Modi, product manager</h2><p>${esc(B.lead)}</p><ul>${B.points.map(([a,b])=>`<li><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join("")}</ul><p>${esc(B.early)}</p><div class="actions"><a class="btn primary" href="${D.links.linkedin}" target="_blank" rel="noopener">Message me on LinkedIn</a><a class="btn" href="${D.links.github}" target="_blank" rel="noopener">GitHub</a><button class="btn" type="button" data-close>Back</button></div>`;
+document.querySelectorAll("[data-brief]").forEach(b=>b.onclick=()=>openO($("#brief")));
+function openLb(src,alt){$("#lbImg").src=src;$("#lbImg").alt=alt;openO($("#lb"))}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),2600)}
+
+document.addEventListener("keydown",e=>{
+  if(document.querySelector(".overlay.open")){if(e.key==="Escape")document.querySelectorAll(".overlay.open").forEach(closeO);return}
+  if(e.key==="Escape"&&sheetOpen()){closeSheet();return}
+  if(e.target.closest&&e.target.closest("input,textarea"))return;
+  if((e.key==="Enter"||e.key==="ArrowRight")&&!sheetOpen()&&state.depth<8&&document.activeElement===document.body){e.preventDefault();goNext()}
+});
+document.addEventListener("visibilitychange",()=>document.querySelectorAll(".wall").forEach(w=>w.style.animationPlayState=document.hidden?"paused":"running"));
+addEventListener("resize",()=>{T=view(state.depth);C={...T};apply();kick()});
+
+/* boot */
+function start(){C=view(8);T={...C};apply();
+  const s0=pathEl.getPointAtLength(0);arrow.setAttribute("transform",`translate(${s0.x},${s0.y}) scale(1)`);arrowIn.setAttribute("transform","rotate(-90)");
+  updHud();kick();
+}
+start();
+})();
+</script>
+</body>
+</html>
