@@ -246,18 +246,49 @@ figcaption{font-size:13px;color:var(--muted)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:860px){
-  :root{--sheet-w:100%}
+  :root{--sheet-w:100%;--bar:52px}
+  .bar{gap:var(--space-xs);padding:0 12px}
+  .bar b{font-size:16px}
   .bar .where,.bar .hide-s{display:none}
-  .intro{top:auto;bottom:12px;left:12px;width:calc(100% - 24px);padding:20px}
-  .intro h1{font-size:34px}
-  .intro .lede{font-size:16px}
-  .sheet{top:auto;left:6px;right:6px;bottom:6px;width:auto;height:76dvh;transform:translateY(calc(100% + 30px))}
-  body.sheet-open .go{opacity:0;pointer-events:none}
-  .go .hint{font-size:13.5px;padding:0 4px 0 10px}
+  .found-n{font-size:12px;padding:4px 8px}
+  .intro{top:auto;bottom:10px;left:10px;width:calc(100% - 20px);padding:18px 18px 16px;gap:12px;border-radius:14px}
+  .intro .who{font-size:12.5px}
+  .intro h1{font-size:clamp(27px,8vw,32px);letter-spacing:-.03em}
+  .intro .lede{font-size:15px;line-height:1.5}
+  .intro .now{font-size:13px;padding:3px 10px 3px 3px;max-width:100%}
+  .intro .now span{white-space:nowrap}
+  .intro .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .intro .actions .btn{padding:0 12px;font-size:14px;white-space:normal;text-align:center;line-height:1.2}
+  .intro .actions .primary{grid-column:1 / -1}
+  .sheet{top:auto;left:0;right:0;bottom:0;width:auto;height:72dvh;border-radius:18px 18px 0 0;transform:translateY(calc(100% + 30px))}
+  .sh-top{padding:10px 12px}
+  .sh-body{padding:18px 16px;gap:18px}
+  .sh-foot{padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+  .sh-foot .btn{flex:1;padding:0 10px}
+  .head h2{font-size:28px}
+  .logo,.emb{width:48px;height:48px;border-radius:12px}
+  .line{font-size:16.5px}
+  .shot{height:min(46vh,300px)}
+  .shot.none{height:auto;padding:18px;flex-direction:row;justify-content:flex-start;text-align:left}
+  .shot.none .emb{width:44px;height:44px;flex:none}
   .meta{grid-template-columns:1fr 1fr}
+  .meta div:last-child{grid-column:1 / -1}
   .two{grid-template-columns:1fr}
   .facts div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .links{gap:var(--space-sm) var(--space-lg)}
+  .choice{padding:10px 12px 10px 10px;grid-template-columns:28px minmax(0,1fr)}
+  .choice .tag{grid-column:2}
+  .gate-h h2{font-size:26px}
+  .list button{grid-template-columns:40px minmax(0,1fr);gap:12px}
+  .list .st{grid-column:2;margin-top:-6px}
+  .list small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .go{bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 20px);justify-content:space-between;padding:6px}
+  .go .hint{font-size:13.5px;padding:0 6px 0 10px;min-width:0;overflow:hidden;text-overflow:ellipsis;flex:1;text-align:left}
+  .go .btn{flex:none}
+  body.sheet-open .go{opacity:0;pointer-events:none}
+  .brief{padding:20px}
   .brief li{grid-template-columns:minmax(0,1fr);gap:0}
+  .toast{bottom:88px;max-width:calc(100% - 24px);text-align:center}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:1ms!important}
@@ -413,15 +444,25 @@ let C={x:0,y:0,k:.5},T={...C};
 const sheetOpen=()=>document.body.classList.contains("sheet-open");
 const phone=()=>innerWidth<=860;
 function view(depth){
-  const w=innerWidth,h=innerHeight-58;
-  const areaW=phone()?w:w-(sheetOpen()?Math.min(480,w*.42)+20:0);
-  const areaH=phone()&&sheetOpen()?h*.26:h;
+  const w=innerWidth,h=innerHeight-58,introOn=!$("#intro").classList.contains("away");
+  if(phone()){
+    // phone: the sheet takes the bottom, the field gets what is left above it
+    const sheetH=sheetOpen()?sheet.getBoundingClientRect().height+6:0;
+    const introH=depth>=8&&introOn?$("#intro").getBoundingClientRect().height+12:0;
+    const goH=!sheetOpen()&&depth<8?84:0;
+    const areaH=Math.max(120,h-Math.max(sheetH,introH,goH));
+    const cx=w/2,cy=58+areaH/2;
+    if(depth>=8||depth===0){const ringR=depth>=8?R(7)+30:R(2)+10;return {k:Math.min(w,areaH)/(2*ringR)*.96,x:cx,y:cy,follow:false}}
+    // inside a ring: zoom in on the arrow and follow it
+    const k=Math.min(.95,Math.max(.58,w/(2*R(depth)+40)))*(sheetOpen()?.8:1);
+    return {k,x:cx,y:cy,follow:true,cx,cy};
+  }
+  const areaW=w-(sheetOpen()?Math.min(480,w*.42)+20:0);
   const ringR=depth>=8?R(7)+80:depth===0?R(3)+20:R(depth)+46;
-  const k=Math.min(areaW,areaH)/(2*ringR)*.94;
-  let cx=areaW/2,cy=58+areaH/2;
-  if(depth>=8&&!phone()&&$("#intro").classList.contains("away")===false){cx=w*.68}
-  if(depth>=8&&phone()&&!$("#intro").classList.contains("away")){cy=58+h*.3}
-  return {k:depth>=8&&!phone()&&!$("#intro").classList.contains("away")?Math.min(w*.62,h)/(2*(R(7)+60))*.95:k,x:cx,y:cy};
+  const k=Math.min(areaW,h)/(2*ringR)*.94;
+  let cx=areaW/2,cy=58+h/2;
+  if(depth>=8&&introOn){cx=w*.68}
+  return {k:depth>=8&&introOn?Math.min(w*.62,h)/(2*(R(7)+60))*.95:k,x:cx,y:cy};
 }
 const apply=()=>cam.setAttribute("transform",`translate(${C.x.toFixed(1)},${C.y.toFixed(1)}) scale(${C.k.toFixed(4)})`);
 
@@ -443,6 +484,7 @@ const SPR=CSS.supports("animation-timing-function","linear(0, 1)")?`linear(${spr
 let Ld=0,Lt=0,raf=0,lastT=performance.now(),rot={a:-90,v:0},lastP=null;
 function tick(now){
   const dt=Math.min(.05,(now-lastT)/1000)||.016;lastT=now;
+  if(T.follow&&!panned&&!drag){const ap=pathEl.getPointAtLength(Math.max(0,Ld));T.x=T.cx-ap.x*T.k;T.y=T.cy-ap.y*T.k}
   const a=reduce?1:1-Math.pow(1-.09,dt*60);
   C={x:C.x+(T.x-C.x)*a,y:C.y+(T.y-C.y)*a,k:C.k+(T.k-C.k)*a};apply();
   // the arrow rides the route at a steady pace
@@ -454,7 +496,7 @@ function tick(now){
   if(reduce){rot.a=want}else{const acc=170*diff-14*rot.v;rot.v+=acc*dt;rot.a+=rot.v*dt}
   arrow.setAttribute("transform",`translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) scale(${(1/Math.max(C.k,.35)*.55).toFixed(3)})`);
   arrowIn.setAttribute("transform",`rotate(${rot.a.toFixed(1)})`);
-  const ts=Math.min(2,Math.max(1,.62/C.k));if(Math.abs(ts-(tick.ts||0))>.01){tick.ts=ts;for(const g of Object.values(trEls))g.setAttribute("transform",g.dataset.at+` scale(${ts.toFixed(3)})`)}
+  const ts=phone()?Math.min(2.2,Math.max(1,1/C.k)):Math.min(2,Math.max(1,.62/C.k));if(Math.abs(ts-(tick.ts||0))>.01){tick.ts=ts;for(const g of Object.values(trEls))g.setAttribute("transform",g.dataset.at+` scale(${ts.toFixed(3)})`)}
   const busy=Math.abs(T.x-C.x)+Math.abs(T.y-C.y)+Math.abs(T.k-C.k)*500>.3||Math.abs(Lt-Ld)>.5||Math.abs(diff)+Math.abs(rot.v)>.05;
   raf=busy?requestAnimationFrame(tick):0;
 }
@@ -637,9 +679,10 @@ $("#consultBtn").onclick=showConsult;
 /* ---------- list view: everything, no game required ---------- */
 function showList(){
   sheetMode="list";$("#crumb").textContent="Everything, as a list";
-  body.innerHTML=`<div class="gate-h"><p class="k">No rings, no gates</p><h2>All ${ALL.length} treasures</h2></div><ul class="list">${ALL.map(id=>{const s=S[id];return `<li><button type="button" data-open="${id}">${s.logo?`<img class="logo" src="${s.logo}" alt="" width="44" height="44">`:emblem(id)}<span><b>${esc(s.title)}</b><small>${esc(s.line)}</small></span><span class="st ${s.kind==="job"?"st-off":stCls(s.status)}">${s.kind==="job"?esc(s.span.split(" to ").pop()):esc(s.status)}</span></button></li>`}).join("")}</ul>`;
+  body.innerHTML=`<div class="gate-h"><p class="k">No rings, no gates</p><h2>All ${ALL.length} treasures</h2></div><div class="actions"><button class="btn sm" type="button" data-brief3>20-second version</button><button class="btn sm" type="button" data-consult3>Product consulting</button></div><ul class="list">${ALL.map(id=>{const s=S[id];return `<li><button type="button" data-open="${id}">${s.logo?`<img class="logo" src="${s.logo}" alt="" width="44" height="44">`:emblem(id)}<span><b>${esc(s.title)}</b><small>${esc(s.line)}</small></span><span class="st ${s.kind==="job"?"st-off":stCls(s.status)}">${s.kind==="job"?esc(s.span.split(" to ").pop()):esc(s.status)}</span></button></li>`}).join("")}</ul>`;
   foot.innerHTML=`<button class="btn sm" type="button" data-brief2>20-second version</button><button class="btn sm primary" type="button" id="toV">${state.depth===8?"Enter the vyuh instead":"Back to the vyuh"}</button>`;
   body.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>showTreasure(b.dataset.open,true));
+  body.querySelector("[data-brief3]").onclick=()=>openO($("#brief"));body.querySelector("[data-consult3]").onclick=showConsult;
   foot.querySelector("[data-brief2]").onclick=()=>openO($("#brief"));
   $("#toV").onclick=()=>{closeSheet();if(state.depth===8){$("#intro").classList.add("away");descend(7)}};
   openSheet();
@@ -668,6 +711,7 @@ document.addEventListener("visibilitychange",()=>document.querySelectorAll(".wal
 addEventListener("resize",()=>{T=view(state.depth);C={...T};apply();kick()});
 
 /* boot */
+document.fonts&&document.fonts.ready.then(()=>{if(state.depth===8){C=view(8);T={...C};apply()}});
 function start(){C=view(8);T={...C};apply();
   const s0=pathEl.getPointAtLength(0);arrow.setAttribute("transform",`translate(${s0.x},${s0.y}) scale(1)`);arrowIn.setAttribute("transform","rotate(-90)");
   updHud();kick();
